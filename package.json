@@ -1,0 +1,27 @@
+{
+  "name": "tallerdeespecialidadrep",
+  "version": "1.0.0",
+  "description": "SHC131 Taller de especialidad",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoseMauricioBazagoitiaAyllon/TallerDeEspecialidadRep.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoseMauricioBazagoitiaAyllon/TallerDeEspecialidadRep/issues"
+  },
+  "homepage": "https://github.com/JoseMauricioBazagoitiaAyllon/TallerDeEspecialidadRep#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
