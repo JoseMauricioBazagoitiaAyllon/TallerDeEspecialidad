@@ -3,9 +3,9 @@ const router = express.Router();
 
 const mysqlConnection  = require('../BaseDeDatos');
 
-// GET all Employees
-router.get('/Departamento', (req, res) => {
-    mysqlConnection.query('SELECT * FROM departamento', (err, rows, fields) => {
+// Vista
+router.get('/Empleados', (req, res) => {
+    mysqlConnection.query('SELECT * FROM empleados', (err, rows, fields) => {
       if(!err) {
         res.json(rows);
       } else {
@@ -13,10 +13,10 @@ router.get('/Departamento', (req, res) => {
       }
     });  
   });
-  // GET An Employee
-router.get('/Departamento/:id', (req, res) => {
-  const { id } = req.params; 
-  mysqlConnection.query('SELECT * FROM departamento WHERE Cod_Dep = ?', [id], (err, rows, fields) => {
+  // Ver uno
+router.get('/Empleados/:Cod_Emp', (req, res) => {
+  const { Cod_Emp } = req.params; 
+  mysqlConnection.query('SELECT * FROM empleados WHERE Cod_Emp = ?', [Cod_Emp], (err, rows, fields) => {
     if (!err) {
       res.json(rows[0]);
     } else {
@@ -25,28 +25,34 @@ router.get('/Departamento/:id', (req, res) => {
   });
 });
 //Insertar
-router.post('/Departamento', (req, res) => {
-  const {Cod_Dep,Nombre_Dep} = req.body;
-  console.log(Cod_Dep,Nombre_Dep);
-  const query = 'CALL EmpleadoAgregarOEditar(?,?);'
+router.post('/Empleados', (req, res) => {
+  const {Cod_Emp,Nombre_Emp,Celular,Direccion,Horas_Extras,Dias_P,Dias_A,Dias_F,Dias_totales,Anhos_Antiguedad
+,Cod_Dep,Cod_Rol,Cod_Sueldo} = req.body;
+  console.log(Cod_Emp,Nombre_Emp,Celular,Direccion,Horas_Extras,Dias_P,Dias_A,Dias_F,Dias_totales,Anhos_Antiguedad
+    ,Cod_Dep,Cod_Rol,Cod_Sueldo);
+  const query = 'CALL EmpleadoAgregarOActualizar(?,?,?,?,?,?,?,?,?,?,?,?,?);'
     ;
-  mysqlConnection.query(query, [Cod_Dep,Nombre_Dep], (err, rows, fields) => {
+  mysqlConnection.query(query, [Cod_Emp,Nombre_Emp,Celular,Direccion,Horas_Extras,Dias_P,Dias_A,Dias_F,Dias_totales,Anhos_Antiguedad
+    ,Cod_Dep,Cod_Rol,Cod_Sueldo], (err, rows, fields) => {
     if(!err) {
-      res.json({status: 'Departamento Agregado'});
+      res.json({status: 'Empleado Agregado'});
     } else {
       console.log(err);
     }
   });
 });
 //Actualizar
-router.put('/departamento/:id', (req, res) => {
-  const { Nombre_Dep } = req.body;
-  const { Cod_Dep } = req.params;
-  console.log(Nombre_Dep,Cod_Dep)
-  const query = 'CALL EmpleadoAgregarOEditar(?,?);';
-  mysqlConnection.query(query, [Cod_Dep,Nombre_Dep], (err, rows, fields) => {
+router.put('/Empleados/:Cod_Emp', (req, res) => {
+  const { Cod_Emp } = req.params;
+  const { Nombre_Emp,Celular,Direccion,Horas_Extras,Dias_P,Dias_A,Dias_F,Dias_totales,Anhos_Antiguedad
+    ,Cod_Dep,Cod_Rol,Cod_Sueldo} = req.body;
+  console.log(Nombre_Emp,Nombre_Emp,Celular,Direccion,Horas_Extras,Dias_P,Dias_A,Dias_F,Dias_totales,Anhos_Antiguedad
+    ,Cod_Dep,Cod_Rol,Cod_Sueldo)
+  const query = 'CALL EmpleadoAgregarOActualizar(?,?,?,?,?,?,?,?,?,?,?,?,?);';
+  mysqlConnection.query(query, [Cod_Emp,Nombre_Emp,Celular,Direccion,Horas_Extras,Dias_P,Dias_A,Dias_F,Dias_totales,Anhos_Antiguedad
+    ,Cod_Dep,Cod_Rol,Cod_Sueldo], (err, rows, fields) => {
     if(!err) {
-      res.json({status: 'departamento Actualizado'});
+      res.json({status: 'Empleado Actualizado'});
     } else {
       console.log(err);
     }
@@ -54,11 +60,9 @@ router.put('/departamento/:id', (req, res) => {
 });
 
   //Eliminar
-
-// DELETE An Employee
-router.delete('/departamento/:id', (req, res) => {
-  const { id } = req.params;
-  mysqlConnection.query('DELETE FROM departamento WHERE Cod_Dep = ?', [id], (err, rows, fields) => {
+router.delete('/Empleados/:Cod_Emp', (req, res) => {
+  const { Cod_Emp } = req.params;
+  mysqlConnection.query('DELETE FROM empleados WHERE Cod_Emp = ?', [Cod_Emp], (err, rows, fields) => {
     if(!err) {
       res.json({status: 'Empleado Eliminado'});
     } else {
