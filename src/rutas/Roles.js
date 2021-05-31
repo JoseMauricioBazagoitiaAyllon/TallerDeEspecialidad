@@ -1,22 +1,21 @@
-const express = require('express');
-const router = express.Router();
-
 const mysqlConnection  = require('../BaseDeDatos');
+// GET all 
 
-// Ver todos los roles
-router.get('/Roles', (req, res) => {
-    mysqlConnection.query('SELECT * FROM rol', (err, rows, fields) => {
-      if(!err) {
-        res.json(rows);
-      } else {
-        console.log(err);
-      }
-    });  
-  });
+function MR(req, res){
+  console.log('Get all descuento');
+  mysqlConnection.query('SELECT * FROM rol', (err, rows, fields) => {
+    if(!err) {
+      res.json(rows);
+    } else {
+      console.log(err);
+    }
+  });   
+};
 
-  //Ver un ROl
-router.get('/Roles/:Cod_Rol', (req, res) => {
+// GET only one
+function MAR(req, res){
   const { Cod_Rol } = req.params; 
+  console.log('Get a descuento');
   mysqlConnection.query('SELECT * FROM rol WHERE Cod_Rol = ?', [Cod_Rol], (err, rows, fields) => {
     if (!err) {
       res.json(rows[0]);
@@ -24,14 +23,12 @@ router.get('/Roles/:Cod_Rol', (req, res) => {
       console.log(err);
     }
   });
-});
-//Insertar Rol
-router.post('/Roles', (req, res) => {
-  const {Cod_Rol,Nombre_Rol} = req.body;
-  console.log(Cod_Rol,Nombre_Rol);
-  const query = 'CALL RolAgregarOActualizar(?,?);'
-    ;
-  mysqlConnection.query(query, [Cod_Rol,Nombre_Rol], (err, rows, fields) => {
+};
+//Insertar
+function IR(req, res){
+  const {Nombre_Rol} = req.body;
+  console.log(Nombre_Rol);
+  mysqlConnection.query('insert into rol(Nombre_Rol)values(?)', [Nombre_Rol], (err, rows, fields) => {
     if(!err) {
       res.json({status: 'Rol Agregado'});
     } else {
@@ -41,26 +38,26 @@ router.post('/Roles', (req, res) => {
       console.log(err);
     }
   });
-});
+};
 //Actualizar
-router.put('/Roles/:Cod_Rol', (req, res) => {
+function AR(req, res){
   const { Nombre_Rol } = req.body;
   const { Cod_Rol } = req.params;
   console.log(req.params);
   console.log(Nombre_Rol,Cod_Rol)
-  const query = 'CALL RolAgregarOActualizar(?,?);';
-  mysqlConnection.query(query, [Cod_Rol,Nombre_Rol], (err, rows, fields) => {
+  console.log('update empleado');
+  mysqlConnection.query('update rol set Nombre_Rol = ? where Cod_Rol = ?', [Nombre_Rol,Cod_Rol], (err, rows, fields) => {
     if(!err) {
       res.json({status: 'Rol Actualizado'});
     } else {
       console.log(err);
     }
   });
-});
-
-  //Eliminar
-router.delete('/Roles/:Cod_Rol', (req, res) => {
+};
+//Eliminar
+function ER(req, res){
   const { Cod_Rol } = req.params;
+  console.log('delete Dep');
   mysqlConnection.query('DELETE FROM rol WHERE Cod_Rol = ?', [Cod_Rol], (err, rows, fields) => {
     if(!err) {
       res.json({status: 'Empleado Eliminado'});
@@ -68,8 +65,5 @@ router.delete('/Roles/:Cod_Rol', (req, res) => {
       console.log(err);
     }
   });
-});
-
-
-
-module.exports = router;
+};
+module.exports = {MR,MAR,IR,AR,ER};

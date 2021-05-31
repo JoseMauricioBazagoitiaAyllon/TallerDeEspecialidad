@@ -1,21 +1,21 @@
-const express = require('express');
-const router = express.Router();
-
 const mysqlConnection  = require('../BaseDeDatos');
+// GET all 
 
-// GET all Employees
-router.get('/Departamento', (req, res) => {
-    mysqlConnection.query('SELECT * FROM departamento', (err, rows, fields) => {
-      if(!err) {
-        res.json(rows);
-      } else {
-        console.log(err);
-      }
-    });  
-  });
-  // GET An Employee
-router.get('/Departamento/:Cod_Dep', (req, res) => {
+function MDep(req, res){
+  console.log('Get all departamento');
+  mysqlConnection.query('SELECT * FROM departamento', (err, rows, fields) => {
+    if(!err) {
+      res.json(rows);
+    } else {
+      console.log(err);
+    }
+  }); 
+};
+
+// GET only one
+function MADep(req, res){
   const { Cod_Dep } = req.params; 
+  console.log('Get a empleado');
   mysqlConnection.query('SELECT * FROM departamento WHERE Cod_Dep = ?', [Cod_Dep], (err, rows, fields) => {
     if (!err) {
       res.json(rows[0]);
@@ -23,41 +23,38 @@ router.get('/Departamento/:Cod_Dep', (req, res) => {
       console.log(err);
     }
   });
-});
+};
 //Insertar
-router.post('/Departamento', (req, res) => {
-  const {Cod_Dep,Nombre_Dep} = req.body;
-  console.log(Cod_Dep,Nombre_Dep);
-  const query = 'CALL DepartamentoAgregarOActualizar(?,?);'
-    ;
-  mysqlConnection.query(query, [Cod_Dep,Nombre_Dep], (err, rows, fields) => {
-    if(!err) {
-      res.json({status: 'Departamento Agregado'});
-    } else {
-      console.log(err);
-    }
+function IDep(req, res){
+  console.log('insertar');
+  const {Nombre_Dep} = req.body;
+  console.log(Nombre_Dep);
+  mysqlConnection.query('insert into departamento(Nombre_Dep)values(?)', [Nombre_Dep], (err, rows, fields) => {
+      if(!err) {
+        res.json({status: 'Departamento Agregado'});
+      } else {
+        console.log(err);
+      }
   });
-});
+};
 //Actualizar
-router.put('/departamento/:Cod_Dep', (req, res) => {
+function ADep(req, res){
   const { Nombre_Dep } = req.body;
   const { Cod_Dep } = req.params;
   console.log(Nombre_Dep,Cod_Dep)
-  const query = 'CALL DepartamentoAgregarOActualizar(?,?);';
-  mysqlConnection.query(query, [Cod_Dep,Nombre_Dep], (err, rows, fields) => {
+  console.log('update empleado');
+  mysqlConnection.query('update departamento set Nombre_Dep = ? where Cod_Dep = ?', [Nombre_Dep,Cod_Dep], (err, rows, fields) => {
     if(!err) {
       res.json({status: 'departamento Actualizado'});
     } else {
       console.log(err);
     }
   });
-});
-
-  //Eliminar
-
-// DELETE An Employee
-router.delete('/departamento/:id', (req, res) => {
+};
+//Eliminar
+function EDep(req, res){
   const { id } = req.params;
+  console.log('delete Dep');
   mysqlConnection.query('DELETE FROM departamento WHERE Cod_Dep = ?', [id], (err, rows, fields) => {
     if(!err) {
       res.json({status: 'departamento Eliminado'});
@@ -65,8 +62,5 @@ router.delete('/departamento/:id', (req, res) => {
       console.log(err);
     }
   });
-});
-
-
-
-module.exports = router;
+};
+module.exports = {MDep,MADep,IDep,ADep,EDep};

@@ -1,21 +1,21 @@
-const express = require('express');
-const router = express.Router();
-
 const mysqlConnection  = require('../BaseDeDatos');
+// GET all 
 
-// Vista
-router.get('/Sueldos', (req, res) => {
-    mysqlConnection.query('SELECT * FROM sueldo', (err, rows, fields) => {
-      if(!err) {
-        res.json(rows);
-      } else {
-        console.log(err);
-      }
-    });  
-  });
-  // Ver uno
-router.get('/Sueldos/:Cod_Sueldo', (req, res) => {
+function MS(req, res){
+  console.log('Get all departamento');
+  mysqlConnection.query('SELECT * FROM sueldo', (err, rows, fields) => {
+    if(!err) {
+      res.json(rows);
+    } else {
+      console.log(err);
+    }
+  }); 
+};
+
+// GET only one
+function MAS(req, res){
   const { Cod_Sueldo } = req.params; 
+  console.log('Get a empleado');
   mysqlConnection.query('SELECT * FROM sueldo WHERE Cod_Sueldo = ?', [Cod_Sueldo], (err, rows, fields) => {
     if (!err) {
       res.json(rows[0]);
@@ -23,41 +23,38 @@ router.get('/Sueldos/:Cod_Sueldo', (req, res) => {
       console.log(err);
     }
   });
-});
+};
 //Insertar
-router.post('/Sueldos', (req, res) => {
-  const {Cod_Sueldo,Cant_Sueldo_Dia, Cant_Sueldo_horas_extras} = req.body;
-  console.log(Cod_Sueldo,Cant_Sueldo_Dia, Cant_Sueldo_horas_extras);
-  const query = 'CALL SueldoAgregarOActualizar(?,?,?);'
-    ;
-  mysqlConnection.query(query, [Cod_Sueldo,Cant_Sueldo_Dia, Cant_Sueldo_horas_extras], (err, rows, fields) => {
-    if(!err) {
-      res.json({status: 'Sueldo Agregado'});
-    } else {
-      console.log(err);
-    }
+function IS(req, res){
+  console.log('insertar');
+  const {Cant_Sueldo_Dia, Cant_Sueldo_Horas_Extras} = req.body;
+  console.log(Cant_Sueldo_Dia, Cant_Sueldo_Horas_Extras);
+  mysqlConnection.query('insert into Sueldo(Cant_Sueldo_Dia,Cant_Sueldo_horas_extras)values(?,?)', [Cant_Sueldo_Dia, Cant_Sueldo_Horas_Extras], (err, rows, fields) => {
+      if(!err) {
+        res.json({status: 'Sueldo Agregado'});
+      } else {
+        console.log(err);
+      }
   });
-});
+};
 //Actualizar
-router.put('/Sueldos/:Cod_Sueldo', (req, res) => {
+function AS(req, res){
   const { Cod_Sueldo } = req.params;
-  const { Cant_Sueldo_Dia, Cant_Sueldo_horas_extras} = req.body;
-  console.log(Cod_Sueldo,Cant_Sueldo_Dia, Cant_Sueldo_horas_extras)
-  const query = 'CALL SueldoAgregarOActualizar(?,?,?);';
-  mysqlConnection.query(query, [Cod_Sueldo,Cant_Sueldo_Dia, Cant_Sueldo_horas_extras], (err, rows, fields) => {
+  const { Cant_Sueldo_Dia, Cant_Sueldo_Horas_Extras} = req.body;
+  console.log(Cod_Sueldo,Cant_Sueldo_Dia, Cant_Sueldo_Horas_Extras)
+  console.log('update empleado');
+  mysqlConnection.query('update Sueldo set Cant_Sueldo_Dia = ?, Cant_Sueldo_Horas_Extras = ? where Cod_Sueldo = ?', [Cant_Sueldo_Dia, Cant_Sueldo_Horas_Extras,Cod_Sueldo], (err, rows, fields) => {
     if(!err) {
-      res.json({status: 'Sueldo Actualizado'});
+      res.json({status: 'departamento Actualizado'});
     } else {
       console.log(err);
     }
   });
-});
-
-  //Eliminar
-
-// DELETE An Employee
-router.delete('/Sueldos/:Cod_Sueldo', (req, res) => {
+};
+//Eliminar
+function ES(req, res){
   const { Cod_Sueldo } = req.params;
+  console.log('delete Dep');
   mysqlConnection.query('DELETE FROM sueldo WHERE Cod_Sueldo = ?', [Cod_Sueldo], (err, rows, fields) => {
     if(!err) {
       res.json({status: 'Sueldo Eliminado'});
@@ -65,8 +62,5 @@ router.delete('/Sueldos/:Cod_Sueldo', (req, res) => {
       console.log(err);
     }
   });
-});
-
-
-
-module.exports = router;
+};
+module.exports = {MS,MAS,IS,AS,ES};

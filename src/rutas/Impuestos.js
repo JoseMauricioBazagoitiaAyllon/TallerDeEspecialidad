@@ -1,21 +1,21 @@
-const express = require('express');
-const router = express.Router();
-
 const mysqlConnection  = require('../BaseDeDatos');
+// GET all 
 
-// Vista
-router.get('/Impuestos', (req, res) => {
-    mysqlConnection.query('SELECT * FROM impuesto', (err, rows, fields) => {
-      if(!err) {
-        res.json(rows);
-      } else {
-        console.log(err);
-      }
-    });  
-  });
-  // Ver uno
-router.get('/Impuestos/:Cod_Imp', (req, res) => {
-  const { Cod_Imp } = req.params; 
+function MI(req, res){
+  console.log('Get all descuento');
+  mysqlConnection.query('SELECT * FROM impuesto', (err, rows, fields) => {
+    if(!err) {
+      res.json(rows);
+    } else {
+      console.log(err);
+    }
+  });  
+};
+
+// GET only one
+function MAI(req, res){
+  const { Cod_Imp } = req.params;
+  console.log('Get a descuento');
   mysqlConnection.query('SELECT * FROM impuesto WHERE Cod_Imp = ?', [Cod_Imp], (err, rows, fields) => {
     if (!err) {
       res.json(rows[0]);
@@ -23,50 +23,44 @@ router.get('/Impuestos/:Cod_Imp', (req, res) => {
       console.log(err);
     }
   });
-});
+};
 //Insertar
-router.post('/Impuestos', (req, res) => {
-  const {Cod_Imp,Nombre_Imp,Porcentaje_Imp} = req.body;
-  console.log(Cod_Imp,Nombre_Imp,Porcentaje_Imp);
-  const query = 'CALL ImpuestoAgregarOActualizar(?,?,?);'
-    ;
-  mysqlConnection.query(query, [Cod_Imp,Nombre_Imp,Porcentaje_Imp], (err, rows, fields) => {
+function II(req, res){
+  const {Nombre_Imp,Porcentaje_Imp} = req.body;
+  console.log(Nombre_Imp,Porcentaje_Imp);
+  mysqlConnection.query('insert into impuesto(Nombre_Imp,Porcentaje_Imp)values(?,?)' ,[Nombre_Imp,Porcentaje_Imp], (err, rows, fields) => {
     if(!err) {
       res.json({status: 'Impuesto Agregado'});
     } else {
       console.log(err);
     }
   });
-});
+};
 //Actualizar
-router.put('/Impuestos/:Cod_Imp', (req, res) => {
+function AI(req, res){
   const { Cod_Imp } = req.params;
   const { Nombre_Imp, Porcentaje_Imp} = req.body;
   console.log(Nombre_Imp,Cod_Imp,)
-  const query = 'CALL ImpuestoAgregarOActualizar(?,?,?);';
-  mysqlConnection.query(query, [Cod_Imp,Nombre_Imp,Porcentaje_Imp], (err, rows, fields) => {
-    if(!err) {
-      res.json({status: 'Impuesto Actualizado'});
-    } else {
-      console.log(err);
-    }
-  });
-});
-
-  //Eliminar
-
-// DELETE An Employee
-router.delete('/Impuestos/:Cod_Imp', (req, res) => {
+  console.log('update empleado');
+  mysqlConnection.query('update impuesto set Nombre_Imp = ?, Porcentaje_Imp = ? where Cod_Imp = ?', [Nombre_Imp, Porcentaje_Imp,Cod_Imp],
+       (err, rows, fields) => {
+        if(!err) {
+          res.json({status: 'Impuesto Actualizado'});
+        } else {
+          console.log(err);
+        }
+      });
+};
+//Eliminar
+function EI(req, res){
   const { Cod_Imp } = req.params;
+  console.log('delete Dep');
   mysqlConnection.query('DELETE FROM impuesto WHERE Cod_Imp = ?', [Cod_Imp], (err, rows, fields) => {
     if(!err) {
-      res.json({status: 'departamento Eliminado'});
+      res.json({status: 'Impuesto Eliminado'});
     } else {
       console.log(err);
     }
   });
-});
-
-
-
-module.exports = router;
+};
+module.exports = {MI,MAI,II,AI,EI};
