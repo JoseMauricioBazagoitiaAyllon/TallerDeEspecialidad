@@ -15,6 +15,7 @@ const S = require("./rutas/Sueldos");
 const V = require("./rutas/Vistas");
 const auth = require("./Autenticacion/Autenticacion")
 const admi = require("./rutas/admi")
+const RE = require("./rutas/registro_Emp")
 //P1.MostrarEmp();
 
 //setting
@@ -32,6 +33,7 @@ app.get('/Impuestos',a.verifyToken,I.MI);
 app.get('/Roles',a.verifyToken,R.MR);
 app.get('/Sueldos',a.verifyToken,S.MS);
 app.get('/Admi',a.verifyToken,admi.MAdmi);
+app.get('/RE',a.verifyToken,RE.MREmp);
 //Muchos A Mucho Tablas
 app.get('/SPD',a.verifyToken,SPD.MSPD);
 app.get('/SPI',a.verifyToken,SPI.MSPI);
@@ -55,7 +57,7 @@ app.get('/Sueldos/:Cod_Sueldo',a.verifyToken,S.MAS);
 app.get('/Admi/:Cod_Admi',a.verifyToken,admi.MAAdmi);
 app.get('/SPD/:Cod_Sueldo',a.verifyToken,SPD.MASPD);
 app.get('/SPI/:Cod_Sueldo',a.verifyToken,SPI.MASPI);
-
+app.get('/RE/:cod_Registros_Emp',a.verifyToken,RE.MAREmp);
 //Vistas
 app.get('/Vista_BD_Completa/:Cod_Emp',a.verifyToken,V.MAVC);
 app.get('/Actividad_De_Empleado/:Cod_Emp',a.verifyToken,V.MAAE);
@@ -76,6 +78,7 @@ app.post('/Sueldos',a.verifyToken,S.IS);
 app.post('/Admi',a.verifyToken,admi.IAdmi);
 app.post('/SPD',a.verifyToken,SPD.ISPD);
 app.post('/SPI',a.verifyToken,SPI.ISPI);
+app.post('/RE',a.verifyToken,RE.IREmp);
 ////Login
 //app.post('/login',auth.login)
 //---------------------------------------------------------------------
@@ -89,6 +92,7 @@ app.put('/Sueldos/:Cod_Sueldo',a.verifyToken,S.AS);
 app.put('/Admi/:Cod_Admi',a.verifyToken,admi.AAdmi);
 app.put('/SPD/:Cod_Sueldo',a.verifyToken,SPD.ASPD);
 app.put('/SPI/:Cod_Sueldo',a.verifyToken,SPI.ASPI);
+app.put('/RE/:cod_Registros_Emp',a.verifyToken,RE.AREmp);
 //---------------------------------------------------------------------
 //delete
 app.delete('/Departamento/:id',a.verifyToken,Dep.EDep);
@@ -100,6 +104,7 @@ app.delete('/Sueldos/:Cod_Sueldo',a.verifyToken,S.ES);
 app.delete('/Admi/:Cod_Admi',a.verifyToken,admi.EAdmi);
 app.delete('/SPD/:Cod_Sueldo',a.verifyToken,SPD.ESPD);
 app.delete('/SPI/:Cod_Sueldo',a.verifyToken,SPI.ESPI);
+app.delete('/RE/:cod_Registros_Emp',a.verifyToken,RE.EREmp);
 app.use(require('./Autenticacion/Autenticacion'))
 //----------------------------------------------------------------------
 //Empezando el servidor

@@ -26,12 +26,12 @@ function MAEmp(req, res){
 };
 //Insertar
 function IEmp(req, res){
-  const {Nombre_Emp,Celular,Direccion,Horas_Extras,Dias_P,Dias_A,Dias_F,Dias_totales,Años_Antiguedad
+  const {Nombre_Emp,Celular,Direccion
     ,Cod_Dep,Cod_Rol,Cod_Sueldo} = req.body;
-  console.log(Nombre_Emp,Celular,Direccion,Horas_Extras,Dias_P,Dias_A,Dias_F,Dias_totales,Años_Antiguedad
+  console.log(Nombre_Emp,Celular,Direccion
         ,Cod_Dep,Cod_Rol,Cod_Sueldo);
-  mysqlConnection.query('insert into empleados(Nombre_Emp,Celular,Direccion,Horas_Extras,Dias_P,Dias_A,Dias_F,Dias_totales,Años_Antiguedad,Cod_Dep,Cod_Rol,Cod_Sueldo)values(?,?,?,?,?,?,?,?,?,?,?,?)' ,
-        [Nombre_Emp,Celular,Direccion,Horas_Extras,Dias_P,Dias_A,Dias_F,Dias_totales,Años_Antiguedad
+  mysqlConnection.query('insert into empleados(Nombre_Emp,Celular,Direccion,Cod_Dep,Cod_Rol,Cod_Sueldo)values(?,?,?,?,?,?)' ,
+        [Nombre_Emp,Celular,Direccion
        ,Cod_Dep,Cod_Rol,Cod_Sueldo], (err, rows, fields) => {
        if(!err) {
          res.json({status: 'Empleado Agregado'});
@@ -43,13 +43,13 @@ function IEmp(req, res){
 //Actualizar
 function AEmp(req, res){
   const { Cod_Emp } = req.params;
-  const { Nombre_Emp,Celular,Direccion,Horas_Extras,Dias_P,Dias_A,Dias_F,Dias_totales,Años_Antiguedad
+  const { Nombre_Emp,Celular,Direccion
     ,Cod_Dep,Cod_Rol,Cod_Sueldo} = req.body;
-  console.log(Nombre_Emp,Nombre_Emp,Celular,Direccion,Horas_Extras,Dias_P,Dias_A,Dias_F,Dias_totales,Años_Antiguedad
+  console.log(Nombre_Emp,Nombre_Emp,Celular,Direccion
     ,Cod_Dep,Cod_Rol,Cod_Sueldo)
   console.log('update empleado');
-  mysqlConnection.query('update empleados set Nombre_Emp = ?, Celular = ?,Direccion = ?,Horas_Extras = ?,Dias_P = ?,Dias_A = ?,Dias_F = ?,Dias_totales = ?,Años_Antiguedad = ?,Cod_Dep = ?,Cod_Rol = ?,Cod_Sueldo = ? where Cod_Emp = ?',
-       [Nombre_Emp,Celular,Direccion,Horas_Extras,Dias_P,Dias_A,Dias_F,Dias_totales,Años_Antiguedad,Cod_Dep,Cod_Rol,Cod_Sueldo,Cod_Emp], (err, rows, fields) => {
+  mysqlConnection.query('update empleados set Nombre_Emp = ?, Celular = ?,Direccion = ?,Cod_Dep = ?,Cod_Rol = ?,Cod_Sueldo = ? where Cod_Emp = ?',
+       [Nombre_Emp,Celular,Direccion,Cod_Dep,Cod_Rol,Cod_Sueldo,Cod_Emp], (err, rows, fields) => {
         if(!err) {
           res.json({status: 'Empleado Actualizado'});
         } else {
