@@ -190,4 +190,79 @@ function MABI(req, res){
     }
   });
 }; 
-module.exports = {MVC,MAVC,MAE,MAAE,MDP,MADP,MIP,MAIP,MTSD,MATSD,MTSDI,MATSDI,MTSI,MATSI,MBI,MABI};
+
+function MA(req, res){
+  console.log('Get all admin');
+  mysqlConnection.query('select * from AdminView', (err, rows, fields) => {
+    if(!err) {
+      res.json(rows);
+    } else {
+      console.log(err);
+    }
+  });
+};
+function MAA(req, res){
+  const { Codigo } = req.params; 
+  console.log('Get a empleado');
+  mysqlConnection.query('select * from AdminView where Codigo =  ?', [Codigo], (err, rows, fields) => {
+    if (!err) {
+      res.json(rows[0]);
+    } else {
+      console.log(err);
+    }
+  });
+}; 
+
+function MF(req, res){
+  console.log('Get all admin');
+  mysqlConnection.query('select * from Facturas', (err, rows, fields) => {
+    if(!err) {
+      res.json(rows);
+    } else {
+      console.log(err);
+    }
+  });
+};
+function MAFE(req, res){
+  const { Empresa_Factura } = req.params; 
+  console.log('Get a empleado');
+  mysqlConnection.query('select * from Facturas where Empresa_Factura = "?"', [Empresa_Factura], (err, rows, fields) => {
+    if (!err) {
+      res.json(rows[0]);
+    } else {
+      console.log(err);
+    }
+  });
+}; 
+function MAFEmp(req, res){
+  const { nro_Empleado } = req.params; 
+  console.log('Get a empleado');
+  mysqlConnection.query('select * from Facturas where nro_Empleado = ?', [nro_Empleado], (err, rows, fields) => {
+    if (!err) {
+      res.json(rows[0]);
+    } else {
+      console.log(err);
+    }
+  });
+}; 
+function MAFM(req, res){
+  const { Mes_Descargo } = req.params; 
+  console.log('Get a empleado');
+  mysqlConnection.query('select * from Facturas where Mes_Descargo = "?"', [Mes_Descargo], (err, rows, fields) => {
+    if (!err) {
+      res.json(rows[0]);
+    } else {
+      console.log(err);
+    }
+  });
+}; 
+
+
+
+
+
+
+
+
+
+module.exports = {MVC,MAVC,MAE,MAAE,MDP,MADP,MIP,MAIP,MTSD,MATSD,MTSDI,MATSDI,MTSI,MATSI,MBI,MABI,MA,MAA,MF,MAFE,MAFEmp,MAFM};

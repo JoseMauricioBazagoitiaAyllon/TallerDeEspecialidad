@@ -16,6 +16,9 @@ const V = require("./rutas/Vistas");
 const auth = require("./Autenticacion/Autenticacion")
 const admi = require("./rutas/admi")
 const RE = require("./rutas/registro_Emp")
+const F = require("./rutas/factura")
+const FP = require("./rutas/facturas_presentadas")
+
 //P1.MostrarEmp();
 
 //setting
@@ -46,6 +49,8 @@ app.get('/Total_Sueldo_Dias',a.verifyToken,V.MTSD);
 app.get('/Total_Sueldo_Dias_Informe',a.verifyToken,V.MTSDI);
 app.get('/Total_Sueldo_informe',a.verifyToken,V.MTSI);
 app.get('/beneficios_Informe',a.verifyToken,V.MBI);
+app.get('/Facturas',a.verifyToken,F.MF);
+app.get('/FacturasPresentadas',a.verifyToken,FP.MFP);
 //---------------------------------------------------------------------
 //Get Individual
 app.get('/Departamento/:Cod_Dep',a.verifyToken,Dep.MADep);
@@ -58,6 +63,8 @@ app.get('/Admi/:Cod_Admi',a.verifyToken,admi.MAAdmi);
 app.get('/SPD/:Cod_Sueldo',a.verifyToken,SPD.MASPD);
 app.get('/SPI/:Cod_Sueldo',a.verifyToken,SPI.MASPI);
 app.get('/RE/:cod_Registros_Emp',a.verifyToken,RE.MAREmp);
+app.get('/Facturas/:Cod_Factura',a.verifyToken,F.MAF);
+app.get('/FacturasPresentadas/:Cod_Factura',a.verifyToken,F.MAF);
 //Vistas
 app.get('/Vista_BD_Completa/:Cod_Emp',a.verifyToken,V.MAVC);
 app.get('/Actividad_De_Empleado/:Cod_Emp',a.verifyToken,V.MAAE);
@@ -67,6 +74,12 @@ app.get('/Total_Sueldo_Dias/:Cod_Emp',a.verifyToken,V.MATSD);
 app.get('/Total_Sueldo_Dias_Informe/:Cod_Emp',a.verifyToken,V.MATSDI);
 app.get('/Total_Sueldo_informe/:Cod_Emp',a.verifyToken,V.MATSI);
 app.get('/beneficios_Informe/:Cod_Emp',a.verifyToken,V.MABI);
+app.get('/Admin',a.verifyToken,V.MA);
+app.get('/Admin/:Codigo',a.verifyToken,V.MAA);
+app.get('/VistaFacturas',a.verifyToken,V.MF);
+app.get('/VistaFacturas/:Empresa_Factura',a.verifyToken,V.MAFE);
+app.get('/VistaFacturas/:nro_Empleado',a.verifyToken,V.MAFEmp);
+app.get('/VistaFacturas/:Mes_Descargo',a.verifyToken,V.MAFM);
 //---------------------------------------------------------------------
 //Post
 app.post('/Departamento',a.verifyToken,Dep.IDep);
@@ -80,7 +93,7 @@ app.post('/SPD',a.verifyToken,SPD.ISPD);
 app.post('/SPI',a.verifyToken,SPI.ISPI);
 app.post('/RE',a.verifyToken,RE.IREmp);
 ////Login
-//app.post('/login',auth.login)
+app.post('/login',auth.login);
 //---------------------------------------------------------------------
 //Put
 app.put('/Departamento/:Cod_Dep',a.verifyToken,Dep.ADep);
@@ -105,7 +118,7 @@ app.delete('/Admi/:Cod_Admi',a.verifyToken,admi.EAdmi);
 app.delete('/SPD/:Cod_Sueldo',a.verifyToken,SPD.ESPD);
 app.delete('/SPI/:Cod_Sueldo',a.verifyToken,SPI.ESPI);
 app.delete('/RE/:cod_Registros_Emp',a.verifyToken,RE.EREmp);
-app.use(require('./Autenticacion/Autenticacion'))
+//app.use(require('./Autenticacion/Autenticacion'))
 //----------------------------------------------------------------------
 //Empezando el servidor
 app.listen(app.get('port'), () => {

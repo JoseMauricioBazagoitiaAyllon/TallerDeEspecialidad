@@ -1,8 +1,37 @@
 const express = require('express');
 const mysqlConnection  = require('../BaseDeDatos');
-const app = express();
+const app = express();express
 const jwt = require("jsonwebtoken");
 const router = express.Router();
+function login(req, res){
+    const {User_Name,User_Email,User_password} = req.body;
+    console.log(User_Name,User_Email,User_password);
+    if(User_Name  && User_Email  && User_password ){
+        mysqlConnection.query('Select * from administradores WHERE User_Name = ? && User_Email = ? && User_password = ?',[User_Name,User_Email,User_password],async (err, rows)=>{
+            if(rows.length == 0){
+                res.send('Acceso denegado');
+            }else{
+                //res.send('Acceso Dado')
+                console.log(rows);
+                console.log(User_Name);
+                const user = {
+                    User_Name: User_Name,
+                    User_Email: User_Email,
+                    User_password: User_password
+                }
+                jwt.sign({user}, 'secretkey',(err, token) => {  //{  expiresIn : '30000' }, '1h' asi se pone {user}, 'secretkey',{  expiresIn : '30000' },(err, token)
+                    res.json({
+                        token 
+                    });
+                });
+
+            }
+        })
+    }else{
+        res.send('Por Favor revise los datos')
+    }
+};
+/*
 router.post('/login', async(req, res) => {
     const {User_Name,User_Email,User_password} = req.body;
     console.log(User_Name,User_Email,User_password);
@@ -19,7 +48,7 @@ router.post('/login', async(req, res) => {
                     User_Email: User_Email,
                     User_password: User_password
                 }
-                jwt.sign({user}, 'secretkey',{ expiresIn: '1h' },(err, token) => {
+                jwt.sign({user}, 'secretkey',(err, token) => {  //{  expiresIn : '30000' }, '1h'
                     res.json({
                         token 
                     });
@@ -30,8 +59,8 @@ router.post('/login', async(req, res) => {
     }else{
         res.send('Por Favor revise los datos')
     }
-});
-module.exports = router;
+});*/
+module.exports = {login};
 
 /*
 class login{
